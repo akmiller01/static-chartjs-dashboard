@@ -1,0 +1,62 @@
+<html>
+    <head>
+        <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/5.7.0/d3.min.js'></script>
+    </head>
+    <style>
+        .grid-container {
+            display: grid;
+            grid-template-columns: 49% 49%;
+            gap: 2% 2%;
+        }
+    </style>
+    <body>
+        <div class='grid-container'>
+            <div class='grid-item'>
+                <canvas id='chart1'></canvas>
+            </div>
+            <div class='grid-item'>
+                <canvas id='chart2'></canvas>
+            </div>
+            <div class='grid-item'>
+                <canvas id='chart3'></canvas>
+            </div>
+            <div class='grid-item'>
+                <canvas id='chart4'></canvas>
+            </div>
+        </div>
+        <script>
+            d3.csv('chart1.csv')
+                .then((data) => {
+                    makeChart(data, 'chart1')
+                    makeChart(data, 'chart2')
+                    makeChart(data, 'chart3')
+                    makeChart(data, 'chart4')
+                });
+
+            function makeChart(csvData, chartId){
+                var labels = csvData.map(function(d) {return d.labels});
+                var data = csvData.map(function(d) {return d.count});
+                var chart = new Chart(chartId, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: '# of Votes',
+                            data: data,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            };
+          </script>
+    </body>
+</html>
